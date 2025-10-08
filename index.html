@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-aistudio" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Aistudio" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/smartcar/2025/10/07/aistudio/" class="article-date">
+    <a href="/smartcar/2025/10/07/Aistudio/" class="article-date">
   <time class="dt-published" datetime="2025-10-07T14:02:05.000Z" itemprop="datePublished">2025-10-07</time>
 </a>
     
@@ -85,7 +85,98 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/smartcar/2025/10/07/aistudio/">Aistudio</a>
+      <a class="p-name article-title" href="/smartcar/2025/10/07/Aistudio/">Aistudio</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>生命有时,见证生命亦有时</p>
+</blockquote>
+<h2 id="Quick-illustration"><a href="#Quick-illustration" class="headerlink" title="Quick illustration"></a>Quick illustration</h2><p>在智能车比赛中,ai部分相关内容说难也不难,刚开始入门的知识繁多复杂,但只要开始学会如何正确使用,就算有些原理无法很好地理解,也能将很好地运用相关的工具实现自己的目的. </p>
+<p>如果要更好理解关于神经网络深度学习相关内容,可以在b站上关注<strong>小土堆</strong>学一些关于pytorch的操作熟悉一下基本的神经网络,之后再入手看传奇大神<strong>吴恩达</strong>的深度学习,并拜读一本小鱼书 <strong>《深度学习入门：基于Python的理论与实现》</strong>,相信你也会收获不少.  </p>
+<p>理论部分恕我才疏学浅,上也有大神指引,故在之后的内容中,我将集中讲述在比赛过程中所需要用到的各种工具,包括但不局限于<strong>aistudio线上平台</strong>,<strong>百度智能云</strong>标注工具等的使用,之后有时间也将更新本地部署的流程和注意事项.</p>
+<h2 id="Aistudio"><a href="#Aistudio" class="headerlink" title="Aistudio"></a>Aistudio</h2><ol>
+<li>官方介绍</li>
+</ol>
+<p>AI Studio是百度推出的一个人工智能开发与学习平台,主要面向 AI 学习者、科研人员和开发者。它集成了深度学习开发环境、算力资源、数据集管理、模型训练、部署与可视化 等功能，可以理解为一个“一站式 AI 开发平台”.  </p>
+<ol start="2">
+<li>实际运用</li>
+</ol>
+<p>上述是对aistudio的一些官方介绍,我们在实际运用的时候,只需要知道可以将aistudio当作一个<strong>线上IDE</strong>,可以分享各自的项目实现在线运行,编写代码的时候有类似vscode或者jupyter notebook的风格可供选择,我个人比较喜欢也更推荐<strong>notebook风格</strong>.</p>
+<pre><code>notebook的优势:
+
+-分段运行,清晰看到数据分割,加载,增强以及训练的各个过程
+-方便调试,分块运行代码,可以更清楚看到哪一部分代码出现问题,及时修改
+-理解友好,代码分段书写,有助于学习神经网络搭建过程
+</code></pre>
+<ol start="3">
+<li>使用流程</li>
+</ol>
+<p>在浏览器上直接搜索进入aistudio后,aistudio的使用流程大体可以归纳为:<div style="background #e2ece6ff;padding:10px;border-left:4px solid #144ea4ac;">创建项目-&gt;配置环境-&gt;处理数据集-&gt;模型训练</div><br>接下来将依次说明每一个流程</p>
+<div align="center">
+    <img src="https://i.imgur.com/aGRQfc5.png" width=50%>
+</div>
+
+<pre><code>*创建项目:
+    - 如图所示,点击左下角项目
+    -创建项目后选择数据集,不改变其他的配置
+    -
+    -点击专业开发,选择算力环境(先选择免费的cpu环境,项目开发后训练的时候转换为gpu环境,每人每天八点gpu算力,cpu不限)
+
+*配置环境:
+    -特别说明:线上开发的基础环境中已经配置了CUDA和CUDNN以及PaddlePaddle的正确版本,接下来仅需再安装需要用到的Paddlex和paddleDetection即可
+    -安装Paddlex:
+    !git clone https://gitee.com/paddlepaddle/PaddleX.git
+    -安装PaddleDetection:
+    !Paddlex --install PaddleDetection
+    -根据配置文档安装需要的库:
+    %cd ~/PaddleDetection
+    !pip install --no-index --find-links=./wheels_files -r requirements.txt
+    !pip install typeguard==2.13.3 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+*处理数据集
+    -特别说明:模型训练的重点在于采集和使用合适的标注工具制作出高质量的数据集,接下来对数据集的制作会在另一篇博客中更新,这里只涉及如何在aistudio中导入和划分数据集
+    -导入数据集
+    
+    -常用命令:
+    !unzip -q -o /home/aistudio/data/mydata.zip -d ./raw_dataset
+    (用于解压压缩包)
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lllxxxxxlll.github.io/smartcar/2025/10/07/Aistudio/" data-id="cmgi6g8mz0000egttb7bt9q7v" data-title="Aistudio" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-aistudio-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/smartcar/2025/10/07/aistudio-1/" class="article-date">
+  <time class="dt-published" datetime="2025-10-07T14:02:05.000Z" itemprop="datePublished">2025-10-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/smartcar/2025/10/07/aistudio-1/">Aistudio</a>
     </h1>
   
 
@@ -118,13 +209,13 @@
 </ol>
 <p>在浏览器上直接搜索进入aistudio后,aistudio的使用流程大体可以归纳为:<div style="background #e2ece6ff;padding:10px;border-left:4px solid #144ea4ac;">创建项目-&gt;导入数据集-&gt;配置环境-&gt;编写项目</div><br>接下来将依次说明每一个流程</p>
 <pre><code>*创建项目:
-        ![如图](../images/first.png)右下角
+       ![imgur](https://i.imgur.com/aGRQfc5.png)
 </code></pre>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lllxxxxxlll.github.io/smartcar/2025/10/07/aistudio/" data-id="cmggtl2jo0001hott5wkx1zqd" data-title="Aistudio" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://lllxxxxxlll.github.io/smartcar/2025/10/07/aistudio-1/" data-id="cmgi6g8n60001egttcarjepzq" data-title="Aistudio" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -175,7 +266,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lllxxxxxlll.github.io/smartcar/2025/10/06/hello-world/" data-id="cmggtl2ji0000hott30ax9tws" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://lllxxxxxlll.github.io/smartcar/2025/10/06/hello-world/" data-id="cmgi6g8n70002egtt7a3lb9du" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -218,7 +309,11 @@
       <ul>
         
           <li>
-            <a href="/smartcar/2025/10/07/aistudio/">Aistudio</a>
+            <a href="/smartcar/2025/10/07/Aistudio/">Aistudio</a>
+          </li>
+        
+          <li>
+            <a href="/smartcar/2025/10/07/aistudio-1/">Aistudio</a>
           </li>
         
           <li>
