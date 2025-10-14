@@ -160,6 +160,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://lllxxxxxlll.github.io/smartcar/2025/10/13/Route/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/smartcar/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/smartcar/2025/10/13/Route/" class="post-title-link" itemprop="url">Route</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-10-13 15:07:06" itemprop="dateCreated datePublished" datetime="2025-10-13T15:07:06+08:00">2025-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-10-14 20:44:41" itemprop="dateModified" datetime="2025-10-14T20:44:41+08:00">2025-10-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p><em><strong>There are two roads in front of me…</strong></em></p>
+</blockquote>
+<p>本博客将讲解全流程训练巡航模型和部署,使用的巡航模型如下<br><strong><a target="_blank" rel="noopener" href="https://aistudio.baidu.com/projectdetail/9132524?sUid=14408248&shared=1&ts=1760103726398">项目链接</a></strong></p>
+<div align="center">
+    <img src="https://i.imgur.com/bTb2JgO.png"width=70%>
+</div>
+<p>一个模型的训练都大体可以分为<span style="color:yellow">数据集准备,模型训练和分析,模型部署</span>几个方面,巡航模型也不例外,接下来将详细分析几个方面所用到的技术知识</p>
+
+<p><strong>数据集准备</strong>:</p>
+<blockquote>
+<p>Garbage in,garbage out.<br>这就是著名的GIGO理论,在模型训练的过程,这一理论发挥着不可想象的巨大作用,很多时候,模型效果表现得是否优异,都可以先对数据集进行分析处理,提升数据集的质量可以解决百分之七十的问题,所以我们接下来将对数据采集进行深度分析.</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://lllxxxxxlll.github.io/smartcar/2025/10/07/Aistudio/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -191,7 +268,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-10-10 21:51:27" itemprop="dateModified" datetime="2025-10-10T21:51:27+08:00">2025-10-10</time>
+                <time title="Modified: 2025-10-13 22:12:15" itemprop="dateModified" datetime="2025-10-13T22:12:15+08:00">2025-10-13</time>
               </span>
 
           
@@ -259,9 +336,9 @@
 <ul>
 <li>特别说明:<br>模型训练的重点在于采集和使用合适的标注工具制作出高质量的数据集,<strong>接下来对数据集的制作会在另一篇博客中更新</strong>,这里只涉及如何在aistudio中正确导入和划分数据集</li>
 <li>导入数据集<br>在项目开发的过程中经常会发生要训练不同数据集的情况,但在项目内导入只能选择小于5g的数据集,否则需要先公开项目,选择修改项目,再选择另一个个人数据集完成导入.</li>
-<li>常用命令:<br>!unzip -q -o &#x2F;home&#x2F;aistudio&#x2F;data&#x2F;mydata.zip -d .&#x2F;raw_dataset<br>(用于解压压缩包)<br>!mv &#x2F;first&#x2F;data &#x2F;second&#x2F;data<br>(移动数据集)</li>
+<li>常用命令:<br>!unzip -q -o &#x2F;home&#x2F;aistudio&#x2F;data&#x2F;mydata.zip -d .&#x2F;raw_dataset<br>(用于解压压缩包)<br>!mv &#x2F;first&#x2F;data &#x2F;second&#x2F;data<br>(移动数据集)<br>!cp data&#x2F;first-place mydata&#x2F;<br>(复制数据集)<br>!ls mydata&#x2F;<br>(展示路径下的)</li>
 <li>转换数据集<br>在Paddlex训练中,使用的数据集为<strong>coco格式</strong>(使用绝对坐标来表示标注框,直接从easydata导出就能使用),与yolo主流使用相对坐标的<strong>voc格式</strong>不同.\</li>
-<li>划分数据集<br>将数据集分为8:1:1的或者9:1的比例.<div align="center">
+<li>划分数据集<br>将数据集分为8:1:1的或者9:1的比例.<br>(需要将标签和照片同步进行分割)<div align="center">
   <img src="https://i.imgur.com/eMDZI64.png"width=50%>
 </div></li>
 </ul>
@@ -430,7 +507,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/smartcar/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
