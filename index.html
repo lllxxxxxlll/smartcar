@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-10-15 13:55:11" itemprop="dateModified" datetime="2025-10-15T13:55:11+08:00">2025-10-15</time>
+                <time title="Modified: 2025-10-17 14:58:19" itemprop="dateModified" datetime="2025-10-17T14:58:19+08:00">2025-10-17</time>
               </span>
 
           
@@ -208,16 +208,33 @@
           <blockquote>
 <p><em><strong>There are two roads in front of me…</strong></em></p>
 </blockquote>
-<p>本博客将讲解全流程训练巡航模型和部署,使用的巡航模型如下<br><strong><a target="_blank" rel="noopener" href="https://aistudio.baidu.com/projectdetail/9132524?sUid=14408248&shared=1&ts=1760103726398">项目链接</a></strong></p>
+<h1 id="模型训练和分析"><a href="#模型训练和分析" class="headerlink" title="模型训练和分析:"></a>模型训练和分析:</h1><p>本博客将讲解全流程训练巡航模型和部署,使用的巡航模型如下<br><strong><a target="_blank" rel="noopener" href="https://aistudio.baidu.com/projectdetail/9132524?sUid=14408248&shared=1&ts=1760103726398">项目链接</a></strong></p>
 <div align="center">
     <img src="https://i.imgur.com/bTb2JgO.png"width=70%>
 </div>
 <p>一个模型的训练都大体可以分为<span style="color:red">数据集准备,模型训练和分析,模型部署</span>几个方面,巡航模型也不例外,接下来将详细分析几个方面所用到的技术知识</p>
 
-<p><strong>数据集准备</strong>:</p>
-<blockquote>
-<p>***Garbage in,garbage out.***<br>这就是著名的GIGO理论,在模型训练的过程,这一理论发挥着不可想象的巨大作用,很多时候,模型效果表现得是否优异,都可以先对数据集进行分析处理,提升数据集的质量可以解决百分之七十的问题,所以我们接下来将对数据采集进行深度分析.</p>
+<h1 id="数据集准备"><a href="#数据集准备" class="headerlink" title="数据集准备:"></a>数据集准备:</h1><blockquote>
+<p>***Garbage in,garbage out.***<br>这就是著名的GIGO理论,如果输入计算机系统或模型的数据是错误的、不准确的、不完整的或低质量的（”Garbage In”），那么输出的结果也必然是无用、错误或不可信的（”Garbage Out”）。在模型训练的过程,这一理论发挥着不可想象的巨大作用,很多时候,模型效果表现得是否优异,都可以先对数据集进行分析处理,提升数据集的质量可以解决百分之七十的问题,所以我们接下来将对数据采集进行深度分析.</p>
 </blockquote>
+<p>
+该巡航模型的核心理论是模仿学习,即<span style="color:red">捕捉数据集的特征,并能根据这些特征在未见过的环境中进行准确的预测</span>重难点在于协方差漂移,即当模型在实际部署中产生一个小的偏差时，它将进入一个训练数据集中未见过的状态。由于训练数据中没有应对的专家动作，模型可能会做出错误的决定，导致偏差迅速积累，最终冲出赛道。</p>
+
+<p>我们需要多次重复采集赛道上的信息,这里的信息主要包括偏转角和横向偏差.<br>传统的方法是通过手柄控制小车在赛道上采集数据,但人工操作带有延迟、抖动和主观随机性,会使控制量出现剧烈波动,导致数据集中出现很多噪声.</p>
+<p>所以,我们的数据集通过<strong>巡线算法</strong>实现数据集的初次采集,算法能以微秒&#x2F;毫秒级延迟响应图像偏差，确保 $\text{State}$ 和 $\text{Action}$ 之间具有强相关性,最终得到一条平滑,高速且高效的驾驶路线,再通过主动学习,完成数据集增强,在模型训练过程中,完成数据集的迭代.</p>
+<h2 id="巡线算法"><a href="#巡线算法" class="headerlink" title="巡线算法:"></a>巡线算法:</h2><ol>
+<li><strong>图像预处理</strong>:<br>在使用巡线算法采集数据集之前,需要对图像进行预处理,主要包括灰度化、二值化和形态学处理等.</li>
+</ol>
+<ul>
+<li><strong>灰度化</strong>:<br>将原BGR图像转换为灰度图像,可以减少图像的颜色通道,使图像更加简单,同时也方便后续的处理.(使用OpenCV的<code>cv2.cvtColor()</code>函数)</li>
+<li><strong>二值化</strong>:<br>将灰度图像转换为黑白图像,可以使图像更加清晰,同时也方便后续的处理.(使用OpenCV的<code>cv2.threshold()</code>函数),而进行二值化处理时,需要设置一个阈值,将灰度图像中的像素值大于阈值的设为白色,小于阈值的设为黑色.<br>较为简单的方式是直接设置一个固定的阈值,但显然这不是一种好的方法,因为不同的图像环境下,阈值的设置会有很大的差异,所以我们需要一种自适应的阈值设置方法.<br>目前我们使用的大律法是一种简单的自适应阈值法,它采用的是最大类间方差法的原理,根据图像的全局灰度值动态调整阈值,可以使阈值的设置更加灵活,适应不同的图像环境.</li>
+<li><strong>最大类间方差法</strong>:<br>最大类间方差法是一种根据图像局部区域的灰度值动态调整阈值的方法,可以使阈值的设置更加灵活,适应不同的图像环境.(使用OpenCV的<code>cv2.adaptiveThreshold()</code>函数)</li>
+<li><strong>形态学处理</strong>:<br>形态学处理包括腐蚀、膨胀、开运算和闭运算等,可以去除图像中的噪声,同时也可以提取图像中的特征.</li>
+<li><strong>腐蚀</strong>:<br>腐蚀是一种形态学操作,它可以使图像中的物体变小,同时也可以去除图像中的噪声.(使用OpenCV的<code>cv2.erode()</code>函数)</li>
+<li><strong>膨胀</strong>:<br>膨胀是一种形态学操作,它可以使图像中的物体变大,同时也可以填充图像中的空洞.(使用OpenCV的<code>cv2.dilate()</code>函数)</li>
+<li><strong>开运算</strong>:<br>开运算是一种形态学操作,它先进行腐蚀,再进行膨胀,可以去除图像中的噪声,同时也可以提取图像中的特征.(使用OpenCV的<code>cv2.morphologyEx()</code>函数)</li>
+<li><strong>闭运算</strong>:<br>闭运算是一种形态学操作,它先进行膨胀,再进行腐蚀,可以填充图像中的空洞,同时也可以提取图像中的特征.(使用OpenCV的<code>cv2.morphologyEx()</code>函数)</li>
+</ul>
 
       
     </div>
