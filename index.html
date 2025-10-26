@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-10-22 09:45:47" itemprop="dateModified" datetime="2025-10-22T09:45:47+08:00">2025-10-22</time>
+                <time title="Modified: 2025-10-26 23:57:07" itemprop="dateModified" datetime="2025-10-26T23:57:07+08:00">2025-10-26</time>
               </span>
 
           
@@ -229,26 +229,42 @@
 <li><p><strong>灰度化</strong>:<br>将原BGR图像转换为灰度图像,可以减少图像的颜色通道,使图像更加简单,同时也方便后续的处理.(使用OpenCV的<code>cv2.cvtColor()</code>函数)<br>cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)将图片转换为灰度图像,而使用cv2.COLOR_BGR2HSV将图片转换为HSV图像,可以使图像中的颜色信息更加丰富,同时也方便后续的处理.</p>
 <div align="center">
   <img src="https://i.imgur.com/oPnz6So.png"width=50%>
-  <img src="https://i.imgur.com/mOxtMv0.png"width=50%>
 </div>
 </li>
-<li><p><strong>二值化</strong>:<br>将灰度图像转换为黑白图像,可以使图像更加清晰,同时也方便后续的处理.(使用OpenCV的<code>cv2.threshold()</code>函数),而进行二值化处理时,需要设置一个阈值,将灰度图像中的像素值大于阈值的设为白色,小于阈值的设为黑色.<br>较为简单的方式是直接设置一个固定的阈值,但显然这不是一种好的方法,因为不同的图像环境下,阈值的设置会有很大的差异,所以我们需要一种自适应的阈值设置方法.<br>目前我们使用的大律法是一种简单的自适应阈值法,它采用的是最大类间方差法的原理,根据图像的全局灰度值动态调整阈值,可以使阈值的设置更加灵活,适应不同的图像环境.</p>
+<li><p><strong>二值化</strong>:<br>将灰度图像转换为黑白图像,可以使图像更加清晰,同时也方便后续的处理.(使用OpenCV的<code>cv2.threshold()</code>函数),而进行二值化处理时,需要设置一个阈值,将灰度图像中的像素值大于阈值的设为白色,小于阈值的设为黑色.<br>较为简单的方式是直接设置一个固定的阈值,但显然这不是一种好的方法,因为不同的图像环境下,阈值的设置会有很大的差异,所以我们需要一种自适应的阈值设置方法.<br>目前常使用的大津法是一种简单的自适应阈值法,它采用的是最大类间方差法的原理,根据图像的全局灰度值动态调整阈值,可以使阈值的设置更加灵活,适应不同的图像环境.</p>
 <div align="center">
  <img src="https://i.imgur.com/Mcy1SDt.png"width=50%>
 </div>
 </li>
-<li><p><strong>最大类间方差法</strong>:<br>最大类间方差法是一种根据图像局部区域的灰度值动态调整阈值的方法,可以使阈值的设置更加灵活,适应不同的图像环境.(使用OpenCV的<code>cv2.adaptiveThreshold()</code>函数)</p>
+<li><p><strong>最大类间方差法</strong>:<br>最大类间方差法就是在两个不同的类之间,找到一个阈值,使这两个类别之间的灰度值差异特别大,这样可以使阈值的设置更加灵活,适应不同的图像环境.(使用OpenCV的<code>cv2.adaptiveThreshold()</code>函数)<br>适用于处理灰度图像中有两个峰值的情况,借助这一方法可以将两种背景按照灰度值区别分开,提取图像特征.</p>
+<div align="center">
+  <img src="https://i.imgur.com/yuGKnY0.png"width=50%>
+</div>
 </li>
-<li><p><strong>形态学处理</strong>:<br>形态学处理包括腐蚀、膨胀、开运算和闭运算等,可以去除图像中的噪声,同时也可以提取图像中的特征.</p>
-</li>
-<li><p><strong>腐蚀</strong>:<br>腐蚀是一种形态学操作,它可以使图像中的物体变小,同时也可以去除图像中的噪声.(使用OpenCV的<code>cv2.erode()</code>函数)</p>
-</li>
-<li><p><strong>膨胀</strong>:<br>膨胀是一种形态学操作,它可以使图像中的物体变大,同时也可以填充图像中的空洞.(使用OpenCV的<code>cv2.dilate()</code>函数)</p>
-</li>
-<li><p><strong>开运算</strong>:<br>开运算是一种形态学操作,它先进行腐蚀,再进行膨胀,可以去除图像中的噪声,同时也可以提取图像中的特征.(使用OpenCV的<code>cv2.morphologyEx()</code>函数)</p>
-</li>
-<li><p><strong>闭运算</strong>:<br>闭运算是一种形态学操作,它先进行膨胀,再进行腐蚀,可以填充图像中的空洞,同时也可以提取图像中的特征.(使用OpenCV的<code>cv2.morphologyEx()</code>函数)</p>
-</li>
+<li><p><strong>适用范围</strong>:<br>在蓝白道的巡线中使用大津法非常适用,但对于我们的彩色赛道来说,灰度值只能反应图像的亮度,我们需要再根据饱和度,色调等信息来实现更复杂的分割.<br>将图片转换到hsv空间,也是通过cv2.cvtColor()函数实现的,使用的参数是cv2.BGR2HSV.</p>
+<div align="center">
+  <img src="https://i.imgur.com/mOxtMv0.png"width=50%>
+</div>
+在hsv空间中,每个像素点由三个值组成,分别是色调(Hue),饱和度(Saturation)和值(Value),可以更方便地表示颜色信息.
+RGB立方体映射到HSV锥形空间,颜色对应如下:
+<div align="center">
+  <img src="https://i.imgur.com/q4LvMzC.png"width=50%>
+  <img src="https://i.imgur.com/aU7BRzH.png"width=50%>
+</div>
+操作的过程中,我们先查阅hsv空间的颜色对应表,根据对应表设置范围,再使用cv2.inRange()制作掩码模版,将将掩码与原图像相与完成二值化.
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 设置需要提取的颜色的是橙色，然后确认其HSV空间下的范围</span></span><br><span class="line">lower_yellow = np.array([<span class="number">11</span>,<span class="number">43</span>,<span class="number">46</span>])</span><br><span class="line">upper_yellow = np.array([<span class="number">25</span>,<span class="number">255</span>,<span class="number">255</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#制作掩码模板，橙色部分和其他颜色二值化后变为白色和黑色</span></span><br><span class="line">mask = cv2.inRange(hsv,lower_yellow ,upper_yellow)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将模板图像和原始图像按照 像素 位相与，提取出目标颜色</span></span><br><span class="line">res = cv2.bitwise_and(my_hsv,my_hsv,mask = mask)</span><br><span class="line">cv2.imshow(<span class="string">&quot;seghsv&quot;</span>,res)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line">cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>得到的二值化图像如下:</p>
+<div align="center">
+    <img src="https://i.imgur.com/Cl5iqdp.png"width=50%>
+</div>
+
+<ul>
+<li><strong>形态学处理</strong>:<br>形态学处理包括腐蚀、膨胀、开运算和闭运算等,可以去除图像中的噪声,同时也可以提取图像中的特征.</li>
+<li><strong>腐蚀</strong>:<br>腐蚀是一种形态学操作,它可以使图像中的物体变小,同时也可以去除图像中的噪声.(使用OpenCV的<code>cv2.erode()</code>函数)</li>
+<li><strong>膨胀</strong>:<br>膨胀是一种形态学操作,它可以使图像中的物体变大,同时也可以填充图像中的空洞.(使用OpenCV的<code>cv2.dilate()</code>函数)</li>
+<li><strong>开运算</strong>:<br>开运算是一种形态学操作,它先进行腐蚀,再进行膨胀,可以去除图像中的噪声,同时也可以提取图像中的特征.(使用OpenCV的<code>cv2.morphologyEx()</code>函数)</li>
+<li><strong>闭运算</strong>:<br>闭运算是一种形态学操作,它先进行膨胀,再进行腐蚀,可以填充图像中的空洞,同时也可以提取图像中的特征.(使用OpenCV的<code>cv2.morphologyEx()</code>函数)</li>
 </ul>
 
       
